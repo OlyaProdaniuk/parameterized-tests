@@ -29,7 +29,7 @@ describe("Multiple tests", () => {
   ];
 
   testData.forEach(({ filledData, expectedResult }) => {
-    it(`Test ${filledData}`, () => {
+    it(`Test ${testData[0].filledData.position}`, () => {
       cy.get(".position-select .select-button").click();
       cy.contains("top-right", { timeout: 1000 }).click();
       cy.get('[name="title"]')
@@ -50,9 +50,9 @@ describe("Multiple tests", () => {
       cy.get("nb-toast", { timeout: 5000 })
         .eq(0)
         .then((element) => {
-          expect(element)
-            .children("svg")
-            .to.have.attr(testData[1].expectedResult.icon);
+          cy.wrap(element)
+            .find(`[data-name="${testData[1].expectedResult.icon}"]`)
+            .should("exist");
           expect(element).to.contain(testData[1].expectedResult.title);
           expect(element).to.contain(testData[1].expectedResult.content);
           expect(element).to.have.css(
